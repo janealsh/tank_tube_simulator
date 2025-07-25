@@ -31,11 +31,11 @@ stored_v = 0
 
 step = 0.001
 
-def caclulate_pipe_velocity(height, friction_factor):
+def calculate_vp(height, friction_factor):
   return np.sqrt((2 * g * (height + L/150)) / (1 - (np.square(a_tube) / np.square(a_tank) + 1.5 + ((L * friction_factor) / d_tube))))
 
 def calculate_reynolds(velocity):
-  re = (rho*velocity*d_tube)/mu
+  return (rho*velocity*d_tube)/mu # return reynolds number
 
 # assuming material is plastic
 e_over_d = 0.0015/7.94 
@@ -43,18 +43,29 @@ e_over_d = 0.0015/7.94
 #not working... in progress
 def calculate_f(re):
   colebrook_RHS = -2.0*np.log10((e_over_d/3.7) + (2.51/(re/np.sqrt(f))))
-  f = 1/colebrook_RHS**2
+  return  1/colebrook_RHS**2 # returns f
 
-def iterate_f():
-  
+drain_time = 0
 
 # iterate while decreasing height
 while height > 0:
-  f = 0.02 
-  vp = caclulate_pipe_velocity(height, f)
-  stored_v = vp
-  re = calculate_reynolds(stored_v)
+  f_prev = 0.02 
+  f = 0
+#   vp = calculate_vp(height, f_prev)
+#   stored_v = vp
+#   re = calculate_reynolds(stored_v)
+  while abs(f - f_prev) > 0.01:
+    f = f_prev
+    vp = calculate_vp(height, f)
+    re = calculate_reynolds(f)
+    f = calculate_f(re)
+    # if (abs(f - f_prev) < 0.01): 
+    #     break
+    # f_prev = f
 
+  print("this is f: ", f)
+
+  #drain_time += 
   height -= step
 
 print ("hello", theta_deg, "a_tube", a_tube)
