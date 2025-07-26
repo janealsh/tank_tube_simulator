@@ -43,7 +43,6 @@ def calculate_reynolds(velocity):
 # assuming material is plastic
 e_over_d = 0.0015 / 7.94
 
-
 # colebrook equation iteration
 def calculate_f(re, f):
     colebrook_RHS = -2.0 * np.log10((e_over_d / 3.7) + (2.51 / (re * np.sqrt(f))))
@@ -88,5 +87,9 @@ for L in lengths:
   height = 0.08
   drain_time = 0
 
-plt.plot(lengths, drain_times, lengths, experiment_drain_times)
+plt.plot(np.array(lengths) * 100, np.array(drain_times) / 60, label="Calculated Values")
+plt.plot(np.array(lengths) * 100, np.array(experiment_drain_times) / 60, label="Experimental Average")
+plt.xlabel("Tube Lengths (cm)")
+plt.ylabel("Drain Times (min)")
+plt.legend()
 plt.show()
