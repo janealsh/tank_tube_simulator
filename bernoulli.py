@@ -28,8 +28,6 @@ g = 9.81
 
 height = 0.08  # units m
 
-stored_v = 0
-
 step = 0.001
 
 # 0.035904566293528936
@@ -60,22 +58,22 @@ drain_time = 0
 
 # iterate while decreasing height
 while height > 0:
-    f_prev = 0.02
-    f = 0
-    print("f_prev (outside loop) --> ", f_prev)
+    f = 0.01 # initial guess for f
+    f_prev = -1 # stored f value
 
+    print("HEIGHT --> ", height)
+
+    # Iterate for friction factor
     while abs(f - f_prev) > 0.01:
-        f = f_prev
-        print("f (in loop) --> ", f)
-        print("HEIGHT (in loop)--> ", height)
-
         vp = calculate_vp(height, f)
-        re = calculate_reynolds(f)
+        re = calculate_reynolds(vp)
 
-        f_prev = calculate_f(re)
-        print("new f_prev (in loop) --> ", f_prev)
+        f_prev = f
 
-        print("DIFFERENCE: ", f - f_prev)
+        f = calculate_f(re)
+        print("new f_prev (in loop) --> ", f)
+
+        print("DIFFERENCE: ", f, f_prev, f - f_prev)
 
     print("this is f: ", f)
     print(" ")
