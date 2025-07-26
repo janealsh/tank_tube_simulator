@@ -48,11 +48,10 @@ def calculate_reynolds(velocity):
 e_over_d = 0.0015 / 7.94
 
 
-# not working... in progress
+# colebrook equation iteration
 def calculate_f(re):
     colebrook_RHS = -2.0 * np.log10((e_over_d / 3.7) + (2.51 / (re / np.sqrt(f))))
     return 1 / colebrook_RHS**2  # returns f
-
 
 drain_time = 0
 
@@ -78,6 +77,9 @@ while height > 0:
     print("this is f: ", f)
     print(" ")
 
+    final_vp = calculate_vp(height, f)
 
-    # drain_time +=
-    height -= step
+    drain_time += step / final_vp # dh divided by v2
+    print("drain_time -->", drain_time)
+
+    height = round(height - step, 3) # Avoid floating point error
