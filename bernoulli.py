@@ -30,15 +30,13 @@ step = 0.001
 drain_times = []
 
 def calculate_vp(height, friction_factor, L):
-    pipe_vel_squared = (2 * g * (height + L / 150)) / (0.5 + ((L * friction_factor) / d_tube))
+    pipe_vel_squared = (2 * g * (height + (L / 150))) / (1.5 - (a_tube**2 / a_tank**2) + ((L * friction_factor) / d_tube))
     # print("pipe velocity squared is -----------> ", pipe_vel_squared)
     pipe_velocity = np.sqrt(pipe_vel_squared)
     return pipe_velocity
 
-
 def calculate_reynolds(velocity):
     return (rho * velocity * d_tube) / mu  # return reynolds number
-
 
 # assuming material is plastic
 e_over_d = 0.0015 / 7.94
@@ -53,22 +51,26 @@ drain_time = 0
 # iterate while decreasing height
 for L in lengths:
   while height > 0:
-      f = 0.01 # initial guess for f
+      f = 0.02 # initial guess for f
       f_prev = -1 # stored f value
 
       # print("HEIGHT --> ", height)
+      vp_guess = np.sqrt((2 * g * (height + (L / 150))) / (1.5 - (a_tube**2 / a_tank**2)))
+      re = calculate_reynolds(vp_guess)
 
-      # Iterate for friction factor
-      while abs(f - f_prev) > 0.0001:
-          vp = calculate_vp(height, f, L)
-          re = calculate_reynolds(vp)
-
-          f_prev = f
-
-          f = calculate_f(re, f_prev)
-          #print("new f_prev (in loop) --> ", f)
-
-          #print("DIFFERENCE: ", f, f_prev, f - f_prev)
+      if re < 2300:
+        f = 64 / re
+      else:
+        vp = calculate_vp(height, f, L)
+        re = calculate_reynolds(vp)
+        # Iterate for friction factor
+        while abs(f - f_prev) > 0.0001:
+            f_prev = f
+            f = calculate_f(re, f_prev)
+            #print("new f_prev (in loop) --> ", f)
+            #print("DIFFERENCE: ", f, f_prev, f - f_prev)
+            vp = calculate_vp(height, f, L)
+            re = calculate_reynolds(vp)
 
       # print(" ")
 
@@ -85,8 +87,6 @@ for L in lengths:
 
   height = 0.08
   drain_time = 0
-
-labels = ["a", "b", "c", "d"]
 
 np_lengths = np.array(lengths) * 100
 np_times = np.array(drain_times) / 60
