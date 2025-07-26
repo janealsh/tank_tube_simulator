@@ -30,7 +30,7 @@ step = 0.001
 drain_times = []
 
 def calculate_vp(height, friction_factor, L):
-    pipe_vel_squared = (2 * g * (height + L / 150)) / (2.5 - (a_tube**2 / a_tank**2) + ((L * friction_factor) / d_tube))
+    pipe_vel_squared = (2 * g * (height + L / 150)) / (0.5 + ((L * friction_factor) / d_tube))
     # print("pipe velocity squared is -----------> ", pipe_vel_squared)
     pipe_velocity = np.sqrt(pipe_vel_squared)
     return pipe_velocity
@@ -70,7 +70,6 @@ for L in lengths:
 
           #print("DIFFERENCE: ", f, f_prev, f - f_prev)
 
-      # print("this is f: ", f)
       # print(" ")
 
       final_vp = calculate_vp(height, f, L)
@@ -87,9 +86,18 @@ for L in lengths:
   height = 0.08
   drain_time = 0
 
-plt.plot(np.array(lengths) * 100, np.array(drain_times) / 60, label="Calculated Values")
-plt.plot(np.array(lengths) * 100, np.array(experiment_drain_times) / 60, label="Experimental Average")
-plt.xlabel("Tube Lengths (cm)")
-plt.ylabel("Drain Times (min)")
+labels = ["a", "b", "c", "d"]
+
+np_lengths = np.array(lengths) * 100
+np_times = np.array(drain_times) / 60
+np_experiment_times = np.array(experiment_drain_times) / 60
+
+line1 = plt.plot(np_lengths, np_times, marker='o', label="Calculated Values")
+plt.plot(np_lengths, np_experiment_times, marker='o', label="Experimental Average")
+plt.fill_between(np_lengths, np_times, np_experiment_times, color='lightgray', alpha=0.4, label='Difference')
+
+plt.xlabel("Tube Length (cm)")
+plt.ylabel("Drain Time (min)")
 plt.legend()
+plt.grid(True)
 plt.show()
