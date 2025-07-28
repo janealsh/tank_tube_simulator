@@ -1,6 +1,5 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
 # units m
 lengths = [0.2, 0.3, 0.4, 0.6]
 experiment_drain_times = [180 + 19, 180 + 34, 240 + 26, 240 + 48]
