@@ -51,8 +51,6 @@ def calculate_f(re, f):
 
 drain_time = 0
 
-print("T-Joint Times")
-
 # iterate while decreasing height
 for L in lengths:
   while height > 0:
