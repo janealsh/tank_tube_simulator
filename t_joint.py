@@ -51,6 +51,8 @@ def calculate_f(re, f):
 
 drain_time = 0
 
+print("T-Joint Times")
+
 # iterate while decreasing height
 for L in lengths:
   while height > 0:
@@ -97,10 +99,10 @@ np_times = np.array(drain_times) / 60
 def get_drain_time():
   return drain_times
 
-line1 = plt.plot(np_lengths, np_times, marker='o', label="Calculated Values")
+# line1 = plt.plot(np_lengths, np_times, marker='o', label="Calculated Values")
 
-plt.xlabel("Tube Length (cm)")
-plt.ylabel("Drain Time (min)")
-plt.legend()
-plt.grid(True)
-plt.show()
+# plt.xlabel("Tube Length (cm)")
+# plt.ylabel("Drain Time (min)")
+# plt.legend()
+# plt.grid(True)
+# plt.show()

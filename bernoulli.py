@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from t_joint import get_drain_time
 # units m
 lengths = [0.2, 0.3, 0.4, 0.6]
 experiment_drain_times = [180 + 19, 180 + 34, 240 + 26, 240 + 48]
@@ -90,9 +91,11 @@ for L in lengths:
 np_lengths = np.array(lengths) * 100
 np_times = np.array(drain_times) / 60
 np_experiment_times = np.array(experiment_drain_times) / 60
+np_t_joint_times = np.array(get_drain_time()) / 60
 
 line1 = plt.plot(np_lengths, np_times, marker='o', label="Calculated Values")
 plt.plot(np_lengths, np_experiment_times, marker='o', label="Experimental Average")
+plt.scatter([40], np_t_joint_times, marker='o', label="T-Joint Value")
 plt.fill_between(np_lengths, np_times, np_experiment_times, color='lightgray', alpha=0.4, label='Difference')
 
 plt.xlabel("Tube Length (cm)")
