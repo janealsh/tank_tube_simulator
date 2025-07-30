@@ -93,13 +93,14 @@ np_times = np.array(drain_times) / 60
 np_experiment_times = np.array(experiment_drain_times) / 60
 np_t_joint_times = np.array(get_drain_time()) / 60
 
+plt.grid(True)
+
 line1 = plt.plot(np_lengths, np_times, marker='o', label="Calculated Values")
 plt.plot(np_lengths, np_experiment_times, marker='o', label="Experimental Average")
-plt.scatter([40], np_t_joint_times, marker='o', label="T-Joint Value")
 plt.fill_between(np_lengths, np_times, np_experiment_times, color='lightgray', alpha=0.4, label='Difference')
+plt.scatter([40], np_t_joint_times, marker='o', label="T-Joint Value")
 
 plt.xlabel("Tube Length (cm)")
 plt.ylabel("Drain Time (min)")
 plt.legend()
-plt.grid(True)
 plt.show()

@@ -79,7 +79,7 @@ for L in lengths:
 
       final_vj = calculate_vj(height, f, L)
 
-      t_step = (step * a_tank) / (2 * a_tube * final_vj)
+      t_step = (step * a_tank) / (a_tube * final_vj)
       drain_time += t_step # dh divided by v2
       #print("drain_time -->", drain_time)
 
